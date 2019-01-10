@@ -2,7 +2,9 @@ package proxy
 
 import (
 	"golang.org/x/net/proxy"
+	"net"
 	"net/url"
+	"net/smtp"
 )
 
 // Прокси
@@ -76,4 +78,26 @@ func (p *Proxy) GetAuth() *proxy.Auth {
 // Get proxy address
 func (p *Proxy) GetAddress() string {
 	return p.address
+}
+
+// Получить SMTP клиента используя соединение SOCKS5 с прокси
+// address - адресс хоста с которым нужно установить соединение про протоколу smtp
+//
+// Get client SMTP using SOCKS5 connection with proxy
+// address - the address of the host with which you want to establish a connection about the smtp protocol
+func (p *Proxy) GetSMTPClientUseSOCKS5(address string) (*smtp.Client, error) {
+	dialer, err := proxy.SOCKS5("tcp", p.address, p.auth, proxy.Direct)
+	if err != nil {
+		return nil, err
+	}
+
+	conn, err := dialer.Dial("tcp", address)
+	if err != nil {
+		return nil, err
+	}
+
+	host, _, _ := net.SplitHostPort(address)
+	c, err := smtp.NewClient(conn, host)
+
+	return c, err
 }
