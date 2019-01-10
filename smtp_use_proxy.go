@@ -1,4 +1,4 @@
-package proxy
+package smtp_use_proxy
 
 import (
 	"golang.org/x/net/proxy"
