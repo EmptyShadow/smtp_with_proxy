@@ -25,7 +25,7 @@ type Proxy struct {
 // Get proxy object by proxy url string
 // surl - a string of the form [user[:password]@]host: port
 func NewProxyByStringURL(surl string) (*Proxy, error) {
-	ourl, err := url.Parse(surl)
+	ourl, err := url.Parse("//" + surl)
 	if err != nil {
 		return nil, err
 	}
