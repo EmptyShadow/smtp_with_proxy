@@ -3,8 +3,8 @@ package smtp_use_proxy
 import (
 	"golang.org/x/net/proxy"
 	"net"
-	"net/url"
 	"net/smtp"
+	"net/url"
 )
 
 // Прокси
